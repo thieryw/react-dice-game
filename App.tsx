@@ -16,7 +16,8 @@ export const App: React.FunctionComponent<{
     <div>
       <Dice isLoading={asyncPlay.loading} store={store}/>
       <input type="button" value="roll dice" onClick={useCallback(()=> asyncPlay.execute(),[store])}/>
-    
+      <Player playerId={0} store={store}/>
+      <Player playerId={1} store={store}/>
     </div>
     
   )
@@ -56,14 +57,22 @@ const Player: React.FunctionComponent<{
     "playerPlaying"
   >
   playerId: number;
-}> = (props, playerId)=>{
-  const {store} = props;
+}> = (props)=>{
+  const {store, playerId} = props;
   const [temporaryScore, setTemporaryScore] = useState(0);
   const [globalScore, setGlobalScore] = useState(0);
   useEvt(ctx=>{
-    store.evtGamePlayed(
-      data => data.
-    )
+    store.evtGamePlayed.attach(
+      data => data.playerId === playerId,
+      ctx,
+      data => setTemporaryScore(data.temporaryScore)
+    );
+
+    store.evtHeld.attach(
+      data => data.playerId === playerId,
+      ctx,
+      data => setGlobalScore(data.globalScore)
+    );
 
   },[store])
   return(
@@ -73,5 +82,7 @@ const Player: React.FunctionComponent<{
       <h1>Global Score : {globalScore}</h1>
       <h3>Current Score : {temporaryScore}</h3>
     </div>
+
+  
   )
 }

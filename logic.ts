@@ -24,7 +24,7 @@ export type Store = {
   newGame: ()=> Promise<void>;
 
   evtGamePlayed: NonPostableEvt<Store["playerPlaying"]>;
-  evtHeld: NonPostableEvt<Store["playerPlaying"]>;
+  evtHeld: NonPostableEvt<Pick<Player, "globalScore" | "playerId">>;
   evtGameRestarted: NonPostableEvt<Store>;
 }
 
@@ -67,11 +67,12 @@ export async function getStore(): Promise<Store>{
     },
     "hold": async ()=>{
       await simulateNetworkDelay(300);
-
+      let playerThatScored: Player;
       store.playerPlaying.globalScore += store.playerPlaying.temporaryScore = 0;
+      playerThatScored = store.playerPlaying;
       store.playerPlaying = store.playerPlaying === player1 ? player2 : player1;
 
-      store.evtHeld.post(store.playerPlaying);
+      store.evtHeld.post(playerThatScored);
 
 
     },
