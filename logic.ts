@@ -55,9 +55,12 @@ export async function getStore(): Promise<Store>{
       store.dice = Dice.rollDice();
 
       if(store.dice === 1){
+        
         let playerThatLostRound: Player = store.playerPlaying;
+        
         store.playerPlaying.temporaryScore = 0;
         store.playerPlaying = store.playerPlaying === player1 ? player2 : player1;
+        
         store.evtGamePlayed.post(playerThatLostRound);
         return;
       }
@@ -67,8 +70,11 @@ export async function getStore(): Promise<Store>{
       store.evtGamePlayed.post(store.playerPlaying);
     },
     "hold": async ()=>{
+      
       await simulateNetworkDelay(300);
+      
       let playerThatScored: Player;
+      
       store.playerPlaying.globalScore += store.playerPlaying.temporaryScore;
       store.playerPlaying.temporaryScore = 0;
       playerThatScored = store.playerPlaying;
