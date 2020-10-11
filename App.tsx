@@ -13,8 +13,8 @@ export const App: React.FunctionComponent<{
   const asyncHold = useAsyncCallback(store.hold);
 
   return(
-    <div>
-     
+    <div className="wrapper">
+      <h1 className="main-heading">Dice Game</h1>
       <input 
         className="roll" 
         type="button" 

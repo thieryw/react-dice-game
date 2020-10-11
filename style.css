@@ -2,12 +2,13 @@ h1, h2, h3, p {
   font-family: Lato;
 }
 
-.app >div{
+.app >.wrapper{
  
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-gap: 20px;
-  grid-template-areas:     
+  grid-template-areas: 
+    "heading heading"    
     "   roll roll   "
     "   dice dice   " 
     "player1 player2"
@@ -40,6 +41,13 @@ h1, h2, h3, p {
   border: solid black 2px;
 }
 
+.player:nth-child(1){
+  grid-area: player1;
+}
+.player:nth-child(2){
+  grid-area: player2;
+}
+
 .hold{
   grid-area: hold;
   font-size: 1.5em;
@@ -47,4 +55,10 @@ h1, h2, h3, p {
 
 .playing{
   background-color: lightblue;
+}
+
+.main-heading{
+  grid-area: heading;
+  text-align: center;
+  
 }
