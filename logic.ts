@@ -23,7 +23,7 @@ export type Store = {
   hold: ()=> Promise<void>;
   newGame: ()=> Promise<void>;
 
-  evtGamePlayed: NonPostableEvt<Store["playerPlaying"]>;
+  evtGamePlayed: NonPostableEvt<Pick<Player, "temporaryScore" | "playerId">>;
   evtHeld: NonPostableEvt<Pick<Player, "globalScore" | "playerId">>;
   evtGameRestarted: NonPostableEvt<Store>;
 }
@@ -55,9 +55,10 @@ export async function getStore(): Promise<Store>{
       store.dice = Dice.rollDice();
 
       if(store.dice === 1){
+        let playerThatLostRound: Player = store.playerPlaying;
         store.playerPlaying.temporaryScore = 0;
         store.playerPlaying = store.playerPlaying === player1 ? player2 : player1;
-        store.evtGamePlayed.post(store.playerPlaying);
+        store.evtGamePlayed.post(playerThatLostRound);
         return;
       }
 
@@ -68,7 +69,8 @@ export async function getStore(): Promise<Store>{
     "hold": async ()=>{
       await simulateNetworkDelay(300);
       let playerThatScored: Player;
-      store.playerPlaying.globalScore += store.playerPlaying.temporaryScore = 0;
+      store.playerPlaying.globalScore += store.playerPlaying.temporaryScore;
+      store.playerPlaying.temporaryScore = 0;
       playerThatScored = store.playerPlaying;
       store.playerPlaying = store.playerPlaying === player1 ? player2 : player1;
 

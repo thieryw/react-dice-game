@@ -15,7 +15,7 @@ const Switcher: React.FunctionComponent = ()=>{
   const asyncStore = useAsync(getStore, []);
   
   return(
-    <div>
+    <div className="app">
       {
         asyncStore.loading ? <h1>Loading...</h1> : <App store={asyncStore.result} />
       }

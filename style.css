@@ -1,3 +1,50 @@
-h1, p {
+h1, h2, h3, p {
   font-family: Lato;
+}
+
+.app >div{
+ 
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 20px;
+  grid-template-areas:     
+    "   roll roll   "
+    "   dice dice   " 
+    "player1 player2"
+    "   hold hold   "
+  ;
+}
+
+.dice{
+  grid-area: dice;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: solid black 2px;
+  font-size: 1.5em;
+  font-weight: bold;
+  
+
+
+}
+.roll{
+  
+  grid-area: roll;
+  font-size: 1.5em;
+}
+
+
+.player{
+  text-align: center;
+  border: solid black 2px;
+}
+
+.hold{
+  grid-area: hold;
+  font-size: 1.5em;
+}
+
+.playing{
+  background-color: lightblue;
 }
