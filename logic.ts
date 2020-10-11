@@ -16,7 +16,7 @@ type Player = {
 }
 
 
-type Store = {
+export type Store = {
   dice: Dice;
   playerPlaying: Player;
   play: ()=> Promise<void>;
