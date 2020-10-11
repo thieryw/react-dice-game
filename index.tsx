@@ -17,7 +17,7 @@ const Switcher: React.FunctionComponent = ()=>{
   return(
     <div>
       {
-        asyncStore.loading ? <h1>Loading...</h1> : <App />
+        asyncStore.loading ? <h1>Loading...</h1> : <App store={asyncStore.result} />
       }
 
 

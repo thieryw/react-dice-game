@@ -38,12 +38,12 @@ export async function getStore(): Promise<Store>{
   const player1: Player = {
     "globalScore": 0,
     "temporaryScore": 0,
-    "playerId": 1,
+    "playerId": 0,
   }
   const player2: Player = {
     "globalScore": 0,
     "temporaryScore": 0,
-    "playerId": 2,
+    "playerId": 1,
   }
 
   const store: ToPostableEvt<Store> = {
