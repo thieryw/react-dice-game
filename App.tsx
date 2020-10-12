@@ -23,12 +23,12 @@ export const App: React.FunctionComponent<{
         onClick={useCallback(()=> asyncPlay.execute(),[store])}
       />
       <Dice store={store}/>
-      <Player playerId={0} store={store}/>
-      <Player playerId={1} store={store}/>
+      <Player playerIndex={0} store={store}/>
+      <Player playerIndex={1} store={store}/>
       <input 
         className="hold"
         type="button" 
-        disabled={asyncHold.loading}
+        disabled={asyncHold.loading || store.playerPlaying.temporaryScore === 0}
         value={asyncHold.loading ? "Loading..." : "Hold"} 
         onClick={useCallback(()=> asyncHold.execute(),[store])}
       />

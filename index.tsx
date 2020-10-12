@@ -5,14 +5,13 @@ import './style.css';
 import { useAsync } from "react-async-hook";
 import { getStore } from "./logic";
 
-interface AppProps { }
-interface AppState {
-  name: string;
-}
 
-const Switcher: React.FunctionComponent = ()=>{
+
+
+const Switcher: React.FunctionComponent<{scoreToWin: number}> = (props)=>{
   
-  const asyncStore = useAsync(getStore, []);
+  const {scoreToWin} = props;
+  const asyncStore = useAsync(getStore, [scoreToWin]);
   
   return(
     <div className="app">
@@ -26,4 +25,4 @@ const Switcher: React.FunctionComponent = ()=>{
   )
 }
 
-render(<Switcher/>, document.getElementById('root'));
+render(<Switcher scoreToWin={20}/>, document.getElementById('root'));

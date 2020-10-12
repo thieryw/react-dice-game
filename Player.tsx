@@ -9,35 +9,38 @@ export const Player: React.FunctionComponent<{
     "evtHeld" |
     "playerPlaying"
   >
-  playerId: number;
+  playerIndex: number;
 }> = (props)=>{
   
-  const {store, playerId} = props;
+  const {store, playerIndex} = props;
   const [temporaryScore, setTemporaryScore] = useState(0);
   const [globalScore, setGlobalScore] = useState(0);
   
   useEvt(ctx=>{
     store.evtGamePlayed.attach(
-      data => data.playerId === playerId,
+      data => data.playerIndex === playerIndex,
       ctx,
       data => setTemporaryScore(data.temporaryScore)
     );
 
     store.evtHeld.attach(
-      data => data.playerId === playerId,
+      data => data.playerIndex === playerIndex,
       ctx,
       data => {
-        setGlobalScore(data.globalScore);
         setTemporaryScore(0);
+        setGlobalScore(data.globalScore);
       }
+
     );
+
+
   },[store])
   
   
   return(
     
-    <div className={`player ${store.playerPlaying.playerId === playerId ? "playing" : ""}`}>
-      <h1>Player {playerId + 1}</h1>
+    <div className={`player ${store.playerPlaying.playerIndex === playerIndex ? "playing" : ""}`}>
+      <h1>Player {playerIndex + 1}</h1>
       <h2>Global Score : {globalScore}</h2>
       <h3>Current Score : {temporaryScore}</h3>
     </div>

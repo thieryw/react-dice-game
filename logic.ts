@@ -12,7 +12,7 @@ namespace Dice {
 type Player = {
   globalScore: number;
   temporaryScore: number;
-  playerId: number;
+  playerIndex: number;
 }
 
 
@@ -22,14 +22,15 @@ export type Store = {
   play: ()=> Promise<void>;
   hold: ()=> Promise<void>;
   newGame: ()=> Promise<void>;
+  isGameWon: boolean;
 
-  evtGamePlayed: NonPostableEvt<Pick<Player, "temporaryScore" | "playerId">>;
-  evtHeld: NonPostableEvt<Pick<Player, "globalScore" | "playerId">>;
+  evtGamePlayed: NonPostableEvt<Pick<Player, "temporaryScore" | "playerIndex">>;
+  evtHeld: NonPostableEvt<Pick<Player, "globalScore" | "playerIndex">>;
   evtGameRestarted: NonPostableEvt<Store>;
 }
 
 
-export async function getStore(): Promise<Store>{
+export async function getStore(scoreToWin: number): Promise<Store>{
 
   const simulateNetworkDelay = (delay: number)=>{
     return new Promise<void>(resolve => setTimeout(resolve, delay));
@@ -38,12 +39,12 @@ export async function getStore(): Promise<Store>{
   const player1: Player = {
     "globalScore": 0,
     "temporaryScore": 0,
-    "playerId": 0,
+    "playerIndex": 0,
   }
   const player2: Player = {
     "globalScore": 0,
     "temporaryScore": 0,
-    "playerId": 1,
+    "playerIndex": 1,
   }
 
   const store: ToPostableEvt<Store> = {
@@ -71,14 +72,21 @@ export async function getStore(): Promise<Store>{
     },
     "hold": async ()=>{
       
-      await simulateNetworkDelay(300);
-      
+      await simulateNetworkDelay(300);      
+
       let playerThatScored: Player;
       
       store.playerPlaying.globalScore += store.playerPlaying.temporaryScore;
       store.playerPlaying.temporaryScore = 0;
       playerThatScored = store.playerPlaying;
-      store.playerPlaying = store.playerPlaying === player1 ? player2 : player1;
+      
+      if(scoreToWin <= store.playerPlaying.globalScore){
+        store.isGameWon = true;
+      }else{
+        store.playerPlaying = store.playerPlaying === player1 ? player2 : player1;
+      }
+
+      
 
       store.evtHeld.post(playerThatScored);
 
@@ -98,7 +106,8 @@ export async function getStore(): Promise<Store>{
 
       store.evtGameRestarted.post(store);
     },
-
+    
+    "isGameWon": false,
 
     "evtGamePlayed": new Evt(),
     "evtGameRestarted": new Evt(),
