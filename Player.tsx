@@ -7,7 +7,9 @@ export const Player: React.FunctionComponent<{
   store: Pick<Store,
     "evtGamePlayed" |
     "evtHeld" |
-    "playerPlaying"
+    "playerPlaying" |
+    "evtGameRestarted" |
+    "isGameWon"
   >
   playerIndex: number;
 }> = (props)=>{
@@ -33,14 +35,28 @@ export const Player: React.FunctionComponent<{
 
     );
 
+    store.evtGameRestarted.attach(ctx, () => {
+      setTemporaryScore(0);
+      setGlobalScore(0);
+    });
+
 
   },[store])
   
   
   return(
     
-    <div className={`player ${store.playerPlaying.playerIndex === playerIndex ? "playing" : ""}`}>
-      <h1>Player {playerIndex + 1}</h1>
+    <div className={
+        `player ${store.playerPlaying.playerIndex === playerIndex ? 
+        (store.isGameWon ? "winner" : "playing") : ""}`
+      }
+    >
+      <h1>
+        {
+          store.isGameWon && store.playerPlaying.playerIndex === playerIndex ? 
+          "Winner !" : `Player ${playerIndex}`
+        }
+      </h1>
       <h2>Global Score : {globalScore}</h2>
       <h3>Current Score : {temporaryScore}</h3>
     </div>

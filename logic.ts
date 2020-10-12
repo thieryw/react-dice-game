@@ -94,7 +94,7 @@ export async function getStore(scoreToWin: number): Promise<Store>{
     },
 
     "newGame": async ()=>{
-      await simulateNetworkDelay(1500);
+      await simulateNetworkDelay(1000);
 
       for(const player of [player1, player2]){
         player.globalScore = 0;
@@ -103,6 +103,7 @@ export async function getStore(scoreToWin: number): Promise<Store>{
 
       store.playerPlaying = player1;
       store.dice = 1;
+      store.isGameWon = false;
 
       store.evtGameRestarted.post(store);
     },

@@ -13,6 +13,7 @@ h1, h2, h3, p {
     "   dice dice   " 
     "player1 player2"
     "   hold hold   "
+    "    new new    "
   ;
 }
 
@@ -52,6 +53,10 @@ h1, h2, h3, p {
   grid-area: hold;
   font-size: 1.5em;
 }
+.new-game{
+  grid-area: new;
+  font-size: 1.5em;
+}
 
 .playing{
   background-color: lightblue;
@@ -61,4 +66,9 @@ h1, h2, h3, p {
   grid-area: heading;
   text-align: center;
   
+}
+
+.winner{
+  background-color: purple;
+  color: white;
 }
